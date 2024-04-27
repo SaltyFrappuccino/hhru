@@ -40,7 +40,7 @@ function App() {
         setDesc(descriptionFlag? description[1]: description[2])
     }
     const onClick = () => {
-        fetch("http://localhost:8000/userbot", {
+        fetch("https://gigachat-hr.onrender.com/userbot", {
             method: "POST",
             headers:{"Content-Type": "application/json;charset=utf-8"},
             body: JSON.stringify({
