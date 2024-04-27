@@ -32,12 +32,23 @@ function App() {
     const [FIO, setFIO] = useState('')
     const [phoneNumber, setPhoneNumber] = useState('')
     const [nik, setNik] = useState('')
-    const [desc, setDesc] = useState(descriptionFlag? description[1]: description[2])
+    const [desc, setDesc] = useState('Junior Java Developer со знаниями jUnit, Gradle, servlet, теоретическими знаниями в области ООП и парадигм.')
 
 
     const onDescChange = ()=>{
         setDescriptionFlag(!descriptionFlag)
         setDesc(descriptionFlag? description[1]: description[2])
+    }
+    const onClick = () => {
+        fetch("http://localhost:8000/userbot", {
+            method: "POST",
+            headers:{"Content-Type": "application/json;charset=utf-8"},
+            body: JSON.stringify({
+                fio: FIO,
+                phone: phoneNumber,
+                telegram: nik,
+                content: desc
+            })})
     }
     return (
     <Container maxWidth="lg" sx={{marginTop: "20px"}}>
@@ -49,20 +60,19 @@ function App() {
                     </Box>
                     <Stack className={'stack'} spacing={2} maxWidth={'1000px'} >
                         <Input onChange={(e)=>setFIO(e.target.value)} value={FIO} placeholder={"ФИО"}></Input>
-                        <Input onChange={(e)=>setPhoneNumber(e.target.value)} value={phoneNumber} placeholder={"Телефон"}></Input>
+                        <Input onChange={(e)=> {
+                            setPhoneNumber(e.target.value)
+                        }} value={phoneNumber} placeholder={"Телефон"}></Input>
                         <Input onChange={(e)=>setNik(e.target.value)} value={nik} placeholder={"Ник в телеграмм (начиная с @)"}></Input>
-
+                        <Textarea disabled value={'Junior Java Developer со знаниями jUnit, Gradle, servlet, теоретическими знаниями в области ООП и парадигм.'}  minRows={10}></Textarea>
                         <Stack direction={"row"} justifyContent={"space-between"}>
-                            <Button onClick={onDescChange}
-                                style={{width: '210px', height: '40px'}}
-                            >Изменить описание</Button>
                             <Button
+                                onClick={onClick}
                                 disabled={!(FIO && phoneNumber && nik && desc)}
                                 style={{width: '210px', height: '40px'}}
                                 variant="contained">Откликнуться</Button>
 
                         </Stack>
-                        <Textarea disabled value={descriptionFlag? description[1]: description[2]}  minRows={10}></Textarea>
 
                     </Stack>
                 </Box>
